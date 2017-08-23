@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+<script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
+
+</head>
+<body>
+<form id="stock-form">
+  Stock Company Name: <input type="text" name="ticker" id="ticker"><br>
+  <input type="submit" value="Submit">
+</form>
+
+<div id="chartContainer" style="height: 300px; width: 100%;"></div>
+
+<script type="text/javascript">
+$( document ).ready(function() {
+	$("#stock-form").submit(function(event){
+		company = $("#ticker").val();
+		$.get("getdata", { ticker:company}, function(data, status){
+			console.log(data);
+			var chart = new CanvasJS.Chart("chartContainer",
+			{
+				animationEnabled: true,
+				theme: "theme2",
+				//exportEnabled: true,
+				title:{
+					text: "Closing prices for last 30days"
+				},
+				data: [
+					{
+						type: "line", //change type to bar, line, area, pie, etc
+						dataPoints: data
+					}
+				]
+			});
+
+			chart.render();
+		});	
+		event.preventDefault();
+	});	
+});
+
+</script>
+
+
+</body>
+
+</html>
